@@ -6,15 +6,6 @@ on:
         required: true
         description: Path to bicep template to deploy infrastructure.
         type: string
-      package:
-        required: true
-        description: Artifact path to deploy on webapp
-        type: string
-      slot_name:
-        required: false
-        description: Web app slot to deploy the Artifact
-        type: string
-        default: production
       workload:
         required: true
         description: Name of the workload
@@ -30,10 +21,6 @@ on:
       instance_count:
         required: true
         description: Two digit instance count for azure resources
-        type: string
-      slot_url:
-        required: true
-        description: URL of the slot to be used for deployment
         type: string
       artifact-identifier:
         required: true

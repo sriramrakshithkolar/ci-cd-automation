@@ -27,7 +27,6 @@ jobs:
     uses: sriramrakshithkolar/ci-cd-automation/.github/workflows/deploy.yml@main
     with:
       template_file_path: infrastructure/main.bicep
-      package: app-master
       workload: ci-cd-automation
       environment: dev
       location: eastus2
