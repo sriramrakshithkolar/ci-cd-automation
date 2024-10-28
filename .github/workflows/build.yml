@@ -34,7 +34,7 @@ jobs:
               run: npm install
               working-directory: ${{ env.APP_DIRECTORY }}
             - name: Building the application
-              run: npm run build-app
+              run: npm run build
               working-directory: ${{ env.APP_DIRECTORY }}
             - name: Uploading application and infrastructure artifacts to Github Pipelines
               if: ${{ github.ref_name == 'main' }}
