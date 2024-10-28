@@ -1,0 +1,38 @@
+name: ci-cd-automation-dev
+on:
+  workflow_run:
+    workflows: [-build]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Artifact Source"
+        required: true
+        type: choice
+        default: pipelines
+        options:
+          - pipelines
+      artifact-identifier:
+        description: Workflow run number for pipelines
+        type: string
+        required: true
+permissions:
+  id-token: write
+  contents: read
+  actions: write
+jobs: 
+  deploy-pipelines:
+    if: ${{ inputs.source == 'pipelines' || github.event_name == 'workflow_run'}}
+    uses: sriramrakshithkolar/.github/workflows/deploy.yml@main
+    with:
+      template_file_path: infrastructure/main.bicep
+      package: app-master
+      slot_name: production
+      workload: corporate-website
+      environment: dev
+      location: eastus2
+      instance_count: "01"
+      slot_url: https://app-fbitn-corporate-website-dev-eastus2--canary.azurewebsites.net
+      artifact-identifier: ${{ inputs.artifact-identifier }}
+    secrets: inherit
