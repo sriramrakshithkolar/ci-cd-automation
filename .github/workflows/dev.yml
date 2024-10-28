@@ -24,7 +24,7 @@ permissions:
 jobs: 
   deploy-pipelines:
     if: ${{ inputs.source == 'pipelines' || github.event_name == 'workflow_run'}}
-    uses: sriramrakshithkolar/.github/workflows/deploy.yml@main
+    uses: sriramrakshithkolar/ci-cd-automation/.github/workflows/deploy.yml@main
     with:
       template_file_path: infrastructure/main.bicep
       package: app-master
