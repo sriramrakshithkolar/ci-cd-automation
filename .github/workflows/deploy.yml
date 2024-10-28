@@ -64,6 +64,7 @@ jobs:
           workflow: build.yml
           run_id: ${{ inputs.artifact-identifier }}
           path: ${{ env.APPLICATION_ARTIFACT_FOLDER }}
+            
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -83,32 +84,11 @@ jobs:
         uses: azure/arm-deploy@v2
         with:
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ${{ env.APPLICATION_ARTIFACT_FOLDER }}/${{inputs.template_file_path }}
+          template: ${{inputs.template_file_path }}
           parameters: environment=${{ inputs.environment }} workload=${{ inputs.workload }} deploymentIdentity=${{ vars.CLIENT_ID }}
           deploymentmode: Incremental
           scope: resourcegroup
           failOnStdErr: false
       ### Deploying the web application
-      - name: Deploying application to Canary slot
+      - name: Deploying application to app service
         run: az webapp deploy -n ${{ env.APP_NAME }} -g ${{ env.RESOURCE_GROUP_NAME }} --src-path ./${{ env.APPLICATION_ARTIFACT_FOLDER }}/${{env.APP_FOLDER}}.zip --clean true --restart true --type zip --debug --async
-      - name: Checking if Canary slot is UP
-        run: |
-          timeout --foreground -s TERM 300s bash -c \
-          'while [[ "$(curl -s -o /dev/null -m 3 -L -w ''%{http_code}'' $URL)" != "200" ]];\
-            do echo "Waiting for $URL" && sleep 10;\
-           done' $URL
-          TIMEOUT_RETURN="$?"
-          echo ${TIMEOUT_RETURN}
-          if [[ "${TIMEOUT_RETURN}" == 0 ]]; then
-            echo "$URL is UP!"
-          else
-            echo -e "\n[-] $URL - timeout or other error! [$TIMEOUT_RETURN]"
-            exit
-          fi
-        env:
-          URL: ${{inputs.slot_url}}
-      - name: Swapping slots
-        run: az webapp deployment slot swap -s ${{ env.CANARY_SLOT_NAME }} -n ${{ env.APP_NAME }} -g ${{ env.RESOURCE_GROUP_NAME }} --target-slot ${{ inputs.slot_name }}
-      - name: Stop Canary slot
-        if: ${{ always() }}
-        run: az webapp stop --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.APP_NAME }} --slot ${{env.CANARY_SLOT_NAME}}

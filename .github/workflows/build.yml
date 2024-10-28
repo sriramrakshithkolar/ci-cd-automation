@@ -36,7 +36,7 @@ jobs:
             - name: Building the application
               run: npm run build
               working-directory: ${{ env.APP_DIRECTORY }}
-            - name: Uploading application and infrastructure artifacts to Github Pipelines
+            - name: Uploading application artifacts to Github Pipelines
               if: ${{ github.ref_name == 'main' }}
               uses: actions/upload-artifact@v4
               with:
@@ -49,4 +49,11 @@ jobs:
                     ${{ env.APP_DIRECTORY }}/scripts
                     ${{ env.APP_DIRECTORY }}/package.json
                     ${{ env.APP_DIRECTORY }}/package-lock.json
-                    ${{ env.INFRASTRUCTURE_DIRECTORY }}
+                retention-days: 10
+            - name: Uploading the infrastructure artifacts
+              if: ${{ github.ref_name == 'main' }}
+              uses: actions/upload-artifact@v3
+              with:
+                name: ${{ env.INFRASTRUCTURE_DIRECTORY }}
+                path: ${{ env.INFRASTRUCTURE_DIRECTORY }}
+                retention-days: 10
