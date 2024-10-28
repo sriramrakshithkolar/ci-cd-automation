@@ -30,7 +30,6 @@ env:
   RESOURCE_GROUP_NAME: rg-${{ inputs.workload }}-${{ inputs.environment }}-${{ inputs.location }}-${{ inputs.instance_count }}
   APP_NAME: app-fbitn-${{ inputs.workload }}-${{ inputs.environment }}-${{ inputs.location }}-${{ inputs.instance_count }}
   APP_FOLDER: app
-  APPLICATION_ARTIFACT_FOLDER: app-artifact
   CANARY_SLOT_NAME: canary
   REPOSITORY_URL: https://github.com/sriramrakshithkolar/ci-cd-automation
 
@@ -62,9 +61,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v6
         with:
           workflow: build.yml
-          run_id: ${{ inputs.artifact-identifier }}
-          path: ${{ env.APPLICATION_ARTIFACT_FOLDER }}
-            
+          run_id: ${{ inputs.artifact-identifier }}            
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -75,7 +72,7 @@ jobs:
         uses: azure/arm-deploy@v2
         with:
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ${{ env.APPLICATION_ARTIFACT_FOLDER }}/${{inputs.template_file_path }}
+          template: ${{inputs.template_file_path }}
           parameters: environment=${{ inputs.environment }} workload=${{ inputs.workload }} deploymentIdentity=${{ vars.CLIENT_ID }}
           deploymentmode: Validate
           scope: resourcegroup
@@ -91,4 +88,4 @@ jobs:
           failOnStdErr: false
       ### Deploying the web application
       - name: Deploying application to app service
-        run: az webapp deploy -n ${{ env.APP_NAME }} -g ${{ env.RESOURCE_GROUP_NAME }} --src-path ./${{ env.APPLICATION_ARTIFACT_FOLDER }}/${{env.APP_FOLDER}}.zip --clean true --restart true --type zip --debug --async
+        run: az webapp deploy -n ${{ env.APP_NAME }} -g ${{ env.RESOURCE_GROUP_NAME }} --src-path ./${{env.APP_FOLDER}}.zip --clean true --restart true --type zip --debug --async
