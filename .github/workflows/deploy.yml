@@ -34,7 +34,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, X64, Linux]
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20.x]
