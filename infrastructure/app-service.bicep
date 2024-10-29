@@ -36,7 +36,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       linuxFxVersion: linuxFxVersion
       alwaysOn: true
       ftpsState: 'FtpsOnly'
-      appSettings:[
+      appSettings: [
         {
           name: 'SCM_MAX_ZIP_PACKAGE_COUNT'
           value: '1' // keeping only the recent zip uploaded to app service
@@ -44,10 +44,6 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
           value: 'true'
-        }
-        {
-          name: 'SCM_MAX_ZIP_PACKAGE_COUNT'
-          value: '1' // keeping only the recent zip uploaded to app service
         }
       ]
     }
