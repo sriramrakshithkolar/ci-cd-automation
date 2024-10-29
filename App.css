@@ -1,0 +1,148 @@
+/* Align everything to the center and ensure responsive design */
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative; /* Ensure that children can be layered correctly */
+  z-index: 1; /* Bring content above any background elements */
+  color: white; /* Set text color for all content */
+}
+
+/* Logo styling for better responsiveness */
+.App-logo {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin-top: 20px;
+  position: relative; /* Required for the light effect */
+}
+
+/* Create the light effect */
+.App-logo:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0.7; /* Adjust opacity for the light effect */
+  animation: pulse-light 1.5s ease-in-out infinite; /* Animation for light effect */
+
+
+/* Animation keyframes for light effect */
+@keyframes pulse-light {
+  0%, 100% {
+    transform: scale(1); /* Start and end at normal size */
+    opacity: 0.7; /* Initial opacity */
+  }
+  50% {
+    transform: scale(1.05); /* Slightly enlarge the light effect */
+    opacity: 1; /* Increase opacity at the peak */
+  }
+}
+
+/* Ensure list is displayed properly */
+ul {
+  list-style-type: disc; /* Ensure bullets are displayed */
+  padding-left: 20px; /* Indent list items */
+  margin: 20px 0; /* Space above and below the list */
+  background-color: rgba(0, 0, 0, 0.5); /* Darker semi-transparent background */
+  color: white; /* Set text color to white for better contrast */
+  border-radius: 5px; /* Optional: Rounded corners */
+}
+
+/* Add styling for list items */
+ul li {
+  margin: 10px 0; /* Space between list items */
+  font-size: 1.2rem; /* Increase font size for better visibility */
+}
+
+
+/* Button styling */
+button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative; /* Ensure it layers properly */
+  z-index: 2; /* Bring button above background */
+}
+
+button:hover {
+  background-color: #0056b3;
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Typography */
+h1 {
+  font-size: 5rem;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+/* Background animation */
+.moving-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #ff6f61, #6fa3ef, #f9a8d4);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  z-index: 0; /* Ensures the background is behind the content */
+}
+
+/* Animation keyframes */
+@keyframes gradient {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
+
+/* Ensure content is above the background */
+.App {
+  position: relative; /* Ensures positioning context for absolute children */
+  z-index: 1; /* Brings content above the background */
+  color: white; /* Adjust text color for visibility */
+}
+
+/* Typography adjustments */
+h1, h2, h3, p {
+  position: relative; /* Ensure text layers properly */
+  z-index: 2; /* Ensure text is above other elements */
+}
