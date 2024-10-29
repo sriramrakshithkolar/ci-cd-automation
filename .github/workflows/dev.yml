@@ -29,7 +29,7 @@ jobs:
       template_file_path: infrastructure/main.bicep
       workload: ci-cd-automation
       environment: dev
-      location: eastus
+      location: eastus2
       instance_count: "01"
       artifact-identifier: ${{ inputs.artifact-identifier }}
     secrets: inherit
