@@ -30,18 +30,6 @@ var tags = {
   Monitorable: config.monitorable
 }
 
-@description('Obtaining reference to the subnet for App Service virtual network integration ')
-resource appServiceSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {
-  name: '${config.appServiceVnet.virtualNetworkName}/${config.appServiceVnet.subnetName}'
-  scope: resourceGroup(config.appServiceVnet.resoureGroupName)
-}
-
-@description('Obtaining reference to the virtual network subnet for the private endpoint')
-resource privateEndpointSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' existing = {
-  name: '${config.appServiceVnet.virtualNetworkName}/${config.appServiceVnet.subnetName}'
-  scope: resourceGroup(config.appServiceVnet.resoureGroupName)
-}
-
 @description('A module for the App Service resources')
 module appServiceModule 'app-service.bicep' = {
   name: '${resourceGroup().name}-app-service-module'
@@ -50,8 +38,6 @@ module appServiceModule 'app-service.bicep' = {
     workload: workload
     environment: environment
     location: location
-    appServiceSubnetId: appServiceSubnet.id
-    privateEndpointSubnetId: privateEndpointSubnet.id
     tags: tags
   }
 }

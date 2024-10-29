@@ -27,10 +27,9 @@ on:
         description: release tag or workflow run number
         type: string
 env:
-  RESOURCE_GROUP_NAME: rg-${{ inputs.workload }}-${{ inputs.environment }}-${{ inputs.location }}-${{ inputs.instance_count }}
+  RESOURCE_GROUP_NAME: rg-${{ inputs.workload }}-${{ inputs.environment }}
   APP_NAME: app-fbitn-${{ inputs.workload }}-${{ inputs.environment }}-${{ inputs.location }}-${{ inputs.instance_count }}
   APP_FOLDER: app
-  CANARY_SLOT_NAME: canary
   REPOSITORY_URL: https://github.com/sriramrakshithkolar/ci-cd-automation
 
 jobs:

@@ -13,12 +13,6 @@ param tags object = {}
 @description('Runtime stack')
 param linuxFxVersion string = 'NODE|20-lts'
 
-@description('App Service Subnet Id')
-param appServiceSubnetId string
-
-@description('Private Endpoint Subnet Id')
-param privateEndpointSubnetId string
-
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: 'asp-${workload}-${environment}-${location}-01'
   location: location
@@ -38,12 +32,9 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   tags: tags
   properties: {
     serverFarmId: appServicePlan.id
-    virtualNetworkSubnetId: appServiceSubnetId
-    publicNetworkAccess: 'Disabled'
     siteConfig: {
       linuxFxVersion: linuxFxVersion
       alwaysOn: true
-      publicNetworkAccess: 'Disabled' // important to disable this or the deployment wont go through in corp subscriptions.
       ftpsState: 'FtpsOnly'
       appSettings:[
         {
@@ -60,29 +51,6 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
         }
       ]
     }
-  }
-}
-
-
-@description('A private endpoint to make the App accessible within the virtual network')
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2020-06-01' = {
-  name: 'pep-${workload}-${environment}-${location}-01'
-  location: location
-  properties: {
-    subnet: {
-      id: privateEndpointSubnetId
-    }
-    privateLinkServiceConnections: [
-      {
-        name: 'plconnection-${workload}-${environment}'
-        properties: {
-          privateLinkServiceId: appService.id
-          groupIds: [
-            'sites'
-          ]
-        }
-      }
-    ]
   }
 }
 
