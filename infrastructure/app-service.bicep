@@ -51,4 +51,19 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
+
+@description('An action group to be notified of alerts')
+resource alertGroup 'microsoft.insights/actionGroups@2023-01-01' = {
+  name: 'ag-${workload}-${environment}-${location}-01'
+  location: 'global'
+  properties: {
+    groupShortName: 'aspAlerts'
+    enabled: true
+    emailReceivers: [{
+        name: 'Sriram Kolar '
+        emailAddress: 'sriramrakshithkolar@gmail.com'
+        useCommonAlertSchema: false
+      }]
+  }
+}
 output appService object = appService
